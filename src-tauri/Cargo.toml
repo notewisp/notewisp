@@ -1,0 +1,40 @@
+[package]
+name = "quick-notes"
+version = "0.1.0"
+description = "Capture thoughts as fast as messaging yourself"
+edition = "2024"
+
+[lib]
+# The `_lib` suffix keeps the lib name distinct from the bin name (cargo#8519 on Windows).
+name = "quick_notes_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["tray-icon", "macos-private-api"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rusqlite = { version = "0.40", features = ["bundled"] }
+tauri-plugin-global-shortcut = "2.4.0"
+tauri-plugin-single-instance = "2.5.2"
+tauri-plugin-autostart = "2.7.0"
+tauri-plugin-opener = "2.7.0"
+
+# https://tauri.app/concept/size/#cargo-configuration
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = 3
+panic = "abort"
+strip = true
+
+[target.'cfg(target_os = "macos")'.dependencies]
+tauri-nspanel = "2.1.1"
+
+# Already in the tree via Tauri; used to keep the popup out of Alt+Tab and to hand focus back.
+[target.'cfg(windows)'.dependencies]
+windows = { version = "0.62", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Win32_UI_Input_KeyboardAndMouse"] }
+# Already in the tree via Tauri; lowers WebView2 memory while the popup is hidden.
+webview2-com = "0.39"
