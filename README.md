@@ -14,7 +14,7 @@ npm install
 npm run tauri dev
 ```
 
-The popup appears when the app is ready. After that, **Ctrl+Shift+Space** (Cmd+Shift+Space on macOS) shows and hides it from anywhere, and the tray icon offers Show, Settings and Quit.
+The popup appears when the app is ready. After that, **Alt+N** shows and hides it from anywhere, and the tray icon offers Show, Settings and Quit.
 
 ## Build
 
@@ -55,7 +55,7 @@ Deleted notes can be undone for 5 seconds, stay hidden for 30 days, then are pur
 
 | Shortcut | Where | Action |
 | --- | --- | --- |
-| Ctrl+Shift+Space | Anywhere | Show / hide (configurable in Settings) |
+| Alt+N | Anywhere | Show / hide (configurable in Settings) |
 | Enter / Shift+Enter | Editor | Save / new line |
 | Ctrl+Enter | Editor | Save, even inside a list or code block |
 | Up | Empty editor | Edit the most recent note |

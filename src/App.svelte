@@ -347,6 +347,15 @@
       perf.coldStart = await api.appReady();
       composer?.focus();
       refreshTags();
+      // Another program (e.g. a window manager) may own the hotkey; say so instead of failing silently.
+      api.getSettings().then((s) => {
+        if (s.hotkey_error) {
+          showToast(`Hotkey ${s.hotkey} is taken by another program`, {
+            error: true,
+            action: { label: "Change", run: () => (settingsOpen = true) },
+          });
+        }
+      }, fail);
     })();
     return () => unlisten.then((f) => f());
   });

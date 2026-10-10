@@ -18,7 +18,7 @@
     }
   });
 
-  /** "CmdOrCtrl+Shift+Space" → "Ctrl+Shift+Space" (or ⌘ on macOS). */
+  /** "CmdOrCtrl+Shift+Space" → "Ctrl+Shift+Space" (or Cmd on macOS). */
   function display(hotkey: string) {
     return hotkey.replace("CmdOrCtrl", isMac ? "Cmd" : "Ctrl");
   }

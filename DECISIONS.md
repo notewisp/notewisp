@@ -63,6 +63,8 @@ Places where the implementation departs from, or fills a gap in, the MVP spec, a
 
 ## Window and platform
 
+**Default hotkey is Alt+N**, not Ctrl+Shift+Space, at the owner's request (it fits a GlazeWM setup where Alt is the window-manager modifier and `alt+n` is free). It's changeable in Settings. If another program already owns the hotkey, a toast says so at startup with a shortcut to Settings.
+
 **"Close hides to tray" (milestone 3).** The popup has no title bar, so there's no close button. Esc, focus loss and the hotkey hide; Alt+F4 also only hides; Ctrl+Q and the tray's Quit exit.
 
 **Windows: Alt+Tab and always-on-top.** `skipTaskbar` alone leaves the popup in Alt+Tab, and the windowing layer resets extended styles each time it shows the window. The popup reapplies `WS_EX_TOOLWINDOW` and topmost on every show (and once more ~80 ms later, after WebView2 settles).

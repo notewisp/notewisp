@@ -90,7 +90,7 @@ pub struct Settings {
 
 impl Default for Settings {
     fn default() -> Self {
-        Self { hotkey: "CmdOrCtrl+Shift+Space".into(), launch_at_login: false }
+        Self { hotkey: "Alt+N".into(), launch_at_login: false }
     }
 }
 
@@ -860,7 +860,7 @@ mod tests {
     fn settings_and_draft_round_trip() {
         let conn = open_in_memory().unwrap();
         assert_eq!(get_settings(&conn).unwrap(), Settings::default());
-        let s = Settings { hotkey: "Alt+N".into(), launch_at_login: true };
+        let s = Settings { hotkey: "Ctrl+Alt+K".into(), launch_at_login: true };
         set_settings(&conn, &s).unwrap();
         assert_eq!(get_settings(&conn).unwrap(), s);
 
