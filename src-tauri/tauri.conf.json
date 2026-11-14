@@ -44,7 +44,9 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ],
-    "createUpdaterArtifacts": true
+    "createUpdaterArtifacts": true,
+    "license": "GPL-3.0-or-later",
+    "copyright": "Copyright (C) 2026 The NoteWisp contributors"
   },
   "plugins": {
     "updater": {

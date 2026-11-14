@@ -4,6 +4,7 @@ name = "notewisp"
 version = "0.0.0"
 description = "Capture thoughts as fast as messaging yourself"
 edition = "2024"
+license = "GPL-3.0-or-later"
 
 [lib]
 # The `_lib` suffix keeps the lib name distinct from the bin name (cargo#8519 on Windows).

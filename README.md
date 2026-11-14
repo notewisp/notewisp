@@ -130,3 +130,10 @@ Updates are signed with the key in `~/.tauri/notewisp.key` (password and backup 
 - **Linux:** not tested. On Wayland, global hotkeys and always-on-top depend on the desktop.
 
 See [DECISIONS.md](DECISIONS.md) for where the implementation departs from the spec.
+
+## License
+
+Copyright (C) 2026 The NoteWisp contributors.
+
+NoteWisp is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. It is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; see [LICENSE](LICENSE) for details.
+
