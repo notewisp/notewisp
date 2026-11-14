@@ -21,8 +21,10 @@ The popup appears when the app is ready. After that, **Alt+N** shows and hides i
 ## Build
 
 ```sh
-npm run tauri build      # installers in src-tauri/target/release/bundle/
+npm run app:build        # installers in src-tauri/target/release/bundle/
 ```
+
+`app:build` skips the signed update bundles, so it works without the signing key. Real releases are built and signed by GitHub Actions (see [Releases and updates](#releases-and-updates)).
 
 ## Test
 
@@ -101,6 +103,25 @@ NOTEWISP_DATA_DIR=C:/tmp/notewisp-bench powershell -File scripts/os-budgets.ps1 
 NOTEWISP_DATA_DIR=C:/tmp/notewisp-bench WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222 src-tauri/target/release/notewisp.exe &
 node scripts/budgets.mjs
 ```
+
+## Releases and updates
+
+Production is [GitHub Releases](https://github.com/notewisp/notewisp/releases). Installed apps check `releases/latest/download/latest.json` a minute after starting and then every 6 hours, download a newer version in the background, and install it once the popup has been hidden for 2 minutes (`src-tauri/src/update.rs`). Only the Windows NSIS installer and the Linux AppImage update themselves; `.msi`, `.deb` and `.rpm` installs don't check. Dev builds (`app:dev`) and runs with `NOTEWISP_DATA_DIR` never update.
+
+To release:
+
+```sh
+npm version patch            # or minor / major: bumps package.json, commits, tags v0.1.1
+git push --follow-tags       # the tag starts .github/workflows/release.yml
+```
+
+1. GitHub Actions builds Windows and Linux, signs the update bundles and attaches everything to a **draft** release. Drafts are invisible to installed apps.
+2. Staging: download the draft's installer from the release page, install it over your copy and try it.
+3. Production: press **Publish release**. Installed apps pick it up within 6 hours.
+
+There's no rolling back an update: if a release is broken, ship a fixed, higher version.
+
+Updates are signed with the key in `~/.tauri/notewisp.key` (password and backup in the maintainer's password manager, copies in the repo's Actions secrets `TAURI_SIGNING_PRIVATE_KEY` and `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`). The public half is `plugins.updater.pubkey` in `tauri.conf.json`. **Losing the key or its password means installed apps can never update again.**
 
 ## Platform status
 

@@ -44,6 +44,15 @@ pub fn is_visible(app: &AppHandle) -> bool {
     window(app).and_then(|w| w.is_visible().ok()).unwrap_or(false)
 }
 
+/// True when the popup is hidden and has been for at least `d` (or was never shown).
+pub fn hidden_for(app: &AppHandle, d: Duration) -> bool {
+    if is_visible(app) {
+        return false;
+    }
+    let hidden_at = *app.state::<PopupState>().hidden_at.lock().unwrap();
+    hidden_at.is_none_or(|t| t.elapsed() >= d)
+}
+
 pub fn toggle(app: &AppHandle) {
     if is_visible(app) {
         hide(app, true);

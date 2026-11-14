@@ -2,6 +2,7 @@ mod commands;
 mod db;
 mod export;
 mod popup;
+mod update;
 
 use std::path::{Path, PathBuf};
 use std::sync::Mutex;
@@ -141,6 +142,7 @@ pub fn run() {
                 })
                 .build(),
         )
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .setup(move |app| {
             #[cfg(target_os = "macos")]
             {
@@ -174,6 +176,7 @@ pub fn run() {
                 eprintln!("hotkey {} unavailable: {e}", settings.hotkey);
             }
             build_tray(handle)?;
+            update::spawn(handle.clone());
 
             std::thread::spawn(move || {
                 let backups = dir.join("backups");
