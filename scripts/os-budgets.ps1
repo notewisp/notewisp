@@ -1,14 +1,14 @@
-# Windows-only OS-level budgets for Quick Notes:
+# Windows-only OS-level budgets for NoteWisp:
 #   - cold start: process launch to popup visible and focused (with -Exe, before the rest)
 #   - hotkey to window visible and focused (sent with real key events)
 #   - memory while idle (hidden in the tray), summed over the app and its WebView2 processes
-# Usage: powershell -File scripts/os-budgets.ps1 [-Exe src-tauri/target/release/quick-notes.exe] [-Hotkeys 20]
-# Without -Exe, Quick Notes must already be running.
+# Usage: powershell -File scripts/os-budgets.ps1 [-Exe src-tauri/target/release/notewisp.exe] [-Hotkeys 20]
+# Without -Exe, NoteWisp must already be running.
 param([string]$Exe = "", [int]$Hotkeys = 20, [int]$ColdStarts = 6)
 
 Add-Type -TypeDefinition @"
 using System; using System.Diagnostics; using System.Runtime.InteropServices;
-public static class QnBench {
+public static class NwBench {
   [DllImport("user32.dll")] public static extern IntPtr FindWindow(string c, string t);
   [DllImport("user32.dll")] public static extern bool IsWindowVisible(IntPtr h);
   [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
@@ -33,7 +33,7 @@ public static class QnBench {
     var sw = Stopwatch.StartNew();
     Process.Start(exe);
     while (sw.ElapsedMilliseconds < 10000) {
-      var h = FindWindow("Tauri Window", "Quick Notes");
+      var h = FindWindow("Tauri Window", "NoteWisp");
       if (h != IntPtr.Zero && IsWindowVisible(h) && GetForegroundWindow() == h) return sw.Elapsed.TotalMilliseconds;
       System.Threading.Thread.Sleep(1);
     }
@@ -43,13 +43,13 @@ public static class QnBench {
 "@
 
 if ($Exe) {
-  Get-Process quick-notes -ErrorAction SilentlyContinue | Stop-Process -Force
+  Get-Process notewisp -ErrorAction SilentlyContinue | Stop-Process -Force
   Start-Sleep 1
   $cold = @()
   for ($i = 0; $i -lt $ColdStarts; $i++) {
-    $cold += [math]::Round([QnBench]::ColdStart($Exe), 1)
+    $cold += [math]::Round([NwBench]::ColdStart($Exe), 1)
     Start-Sleep -Milliseconds 1500
-    Get-Process quick-notes | Stop-Process -Force
+    Get-Process notewisp | Stop-Process -Force
     Start-Sleep -Milliseconds 1500
   }
   "cold start -> visible+focused ms: $($cold -join ', ')"
@@ -57,16 +57,16 @@ if ($Exe) {
   Start-Sleep 3
 }
 
-$h = [QnBench]::FindWindow("Tauri Window", "Quick Notes")
-if ($h -eq [IntPtr]::Zero) { throw "Quick Notes is not running" }
+$h = [NwBench]::FindWindow("Tauri Window", "NoteWisp")
+if ($h -eq [IntPtr]::Zero) { throw "NoteWisp is not running" }
 
 # Start hidden.
-if ([QnBench]::IsWindowVisible($h)) { [QnBench]::Toggle(); Start-Sleep -Milliseconds 400 }
+if ([NwBench]::IsWindowVisible($h)) { [NwBench]::Toggle(); Start-Sleep -Milliseconds 400 }
 $samples = @()
 for ($i = 0; $i -lt $Hotkeys; $i++) {
-  $samples += [QnBench]::ShowLatency($h)
+  $samples += [NwBench]::ShowLatency($h)
   Start-Sleep -Milliseconds 250
-  [QnBench]::Toggle()        # hide again
+  [NwBench]::Toggle()        # hide again
   Start-Sleep -Milliseconds 350
 }
 $sorted = $samples | Sort-Object
@@ -74,7 +74,7 @@ $sorted = $samples | Sort-Object
 
 # Idle memory: the app plus every WebView2 process it started.
 Start-Sleep -Seconds 5
-$app = Get-Process quick-notes
+$app = Get-Process notewisp
 $ids = @($app.Id)
 $all = Get-CimInstance Win32_Process
 do {

@@ -127,7 +127,7 @@ export function createEditor(element: HTMLElement, content: JSONContent | null, 
   const suggesting = { current: false };
 
   const Suggestions = Extension.create({
-    name: "quickNotesSuggestions",
+    name: "notewispSuggestions",
     priority: 1000,
     addProseMirrorPlugins() {
       const editor = this.editor;
@@ -171,7 +171,7 @@ export function createEditor(element: HTMLElement, content: JSONContent | null, 
   };
 
   const Keys = Extension.create({
-    name: "quickNotesKeys",
+    name: "notewispKeys",
     // Above the core and list keymaps, below the suggestion plugins.
     priority: 500,
     addKeyboardShortcuts() {

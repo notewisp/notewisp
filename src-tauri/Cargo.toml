@@ -1,12 +1,13 @@
 [package]
-name = "quick-notes"
-version = "0.1.0"
+name = "notewisp"
+# The app's real version lives in package.json (tauri.conf.json reads it from there).
+version = "0.0.0"
 description = "Capture thoughts as fast as messaging yourself"
 edition = "2024"
 
 [lib]
 # The `_lib` suffix keeps the lib name distinct from the bin name (cargo#8519 on Windows).
-name = "quick_notes_lib"
+name = "notewisp_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

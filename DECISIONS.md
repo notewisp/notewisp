@@ -85,6 +85,6 @@ Places where the implementation departs from, or fills a gap in, the MVP spec, a
 
 ## Developer conveniences
 
-- `QN_DATA_DIR` points the app at another data folder (benchmarks, tests).
-- `QN_PERF=1` prints timing lines to stderr.
+- `NOTEWISP_DATA_DIR` points the app at another data folder (benchmarks, tests).
+- `NOTEWISP_PERF=1` prints timing lines to stderr.
 - Ctrl+Alt+Shift+S in a dev build seeds 100,000 notes (`seed_notes` refuses in release builds).

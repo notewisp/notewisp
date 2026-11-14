@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Quick Notes",
-  "version": "0.1.0",
-  "identifier": "com.quicknotes.app",
+  "productName": "NoteWisp",
+  "version": "../package.json",
+  "identifier": "com.notewisp.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -14,7 +14,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Quick Notes",
+        "title": "NoteWisp",
         "width": 720,
         "height": 520,
         "center": true,

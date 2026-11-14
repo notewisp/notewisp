@@ -660,7 +660,7 @@ mod tests {
 
     #[test]
     fn file_database_uses_wal_and_reopens() {
-        let dir = std::env::temp_dir().join(format!("quick-notes-test-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("notewisp-test-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("notes.db");
         {
@@ -889,7 +889,7 @@ mod tests {
     #[ignore]
     fn budgets_on_100k_notes() {
         use std::time::Instant;
-        let dir = std::env::temp_dir().join(format!("quick-notes-bench-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("notewisp-bench-{}", std::process::id()));
         std::fs::create_dir_all(&dir).unwrap();
         let mut conn = open(&dir.join("notes.db")).unwrap();
         let t = Instant::now();

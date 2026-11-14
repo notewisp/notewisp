@@ -1,4 +1,4 @@
-// Timing samples for the performance budgets. Exposed on `window.__qnPerf`
+// Timing samples for the performance budgets. Exposed on `window.__nwPerf`
 // so a measurement script attached to the webview can read them.
 export const perf = {
   /** Enter keydown to the frame that shows the new note (ms). */
@@ -11,4 +11,4 @@ export const perf = {
   coldStart: 0,
 };
 
-(window as unknown as { __qnPerf: typeof perf }).__qnPerf = perf;
+(window as unknown as { __nwPerf: typeof perf }).__nwPerf = perf;

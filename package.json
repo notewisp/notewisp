@@ -1,5 +1,5 @@
 {
-  "name": "quick-notes",
+  "name": "notewisp",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "svelte-check --tsconfig ./tsconfig.json && vite build",
     "check": "svelte-check --tsconfig ./tsconfig.json",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "app:dev": "tauri dev --config src-tauri/tauri.dev.conf.json"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",

@@ -372,7 +372,7 @@ mod tests {
         }
         db::delete_note(&conn, ids[5], base).unwrap();
 
-        let dir = std::env::temp_dir().join(format!("quick-notes-export-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("notewisp-export-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         let files = export_markdown(&conn, &dir).unwrap();
         assert!((40..=42).contains(&files), "{files} files");

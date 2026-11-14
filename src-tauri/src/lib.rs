@@ -27,9 +27,9 @@ pub struct AppState {
     hotkey: Mutex<Option<String>>,
 }
 
-/// Timing lines for the performance budgets, printed when QN_PERF is set.
+/// Timing lines for the performance budgets, printed when NOTEWISP_PERF is set.
 pub fn perf_log(line: &str) {
-    if std::env::var_os("QN_PERF").is_some() {
+    if std::env::var_os("NOTEWISP_PERF").is_some() {
         eprintln!("[perf] {line}");
     }
 }
@@ -65,7 +65,7 @@ fn build_tray(app: &AppHandle) -> tauri::Result<()> {
         ],
     )?;
     let mut tray = TrayIconBuilder::with_id("tray")
-        .tooltip("Quick Notes")
+        .tooltip("NoteWisp")
         .menu(&menu)
         .show_menu_on_left_click(false)
         .on_menu_event(|app, event| match event.id.as_ref() {
@@ -148,8 +148,8 @@ pub fn run() {
                 app.handle().plugin(tauri_nspanel::init())?;
             }
 
-            // QN_DATA_DIR points benchmarks and tests at a throwaway database.
-            let dir = match std::env::var_os("QN_DATA_DIR") {
+            // NOTEWISP_DATA_DIR points benchmarks and tests at a throwaway database.
+            let dir = match std::env::var_os("NOTEWISP_DATA_DIR") {
                 Some(d) => PathBuf::from(d),
                 None => app.path().app_data_dir()?,
             };
@@ -227,7 +227,7 @@ mod tests {
 
     #[test]
     fn maintenance_backs_up_once_a_day_and_keeps_seven() {
-        let dir = std::env::temp_dir().join(format!("quick-notes-maint-{}", std::process::id()));
+        let dir = std::env::temp_dir().join(format!("notewisp-maint-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         let backups = dir.join("backups");
         std::fs::create_dir_all(&backups).unwrap();

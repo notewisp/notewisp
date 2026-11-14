@@ -1,10 +1,10 @@
 // Measures the performance budgets inside the running app's webview.
 //
 // 1. Seed a throwaway database with a dev build (Ctrl+Alt+Shift+S in the popup):
-//      QN_DATA_DIR=/tmp/qn-bench npm run tauri dev
+//      NOTEWISP_DATA_DIR=/tmp/notewisp-bench npm run tauri dev
 // 2. Start the build to measure with remote debugging on the same data:
-//      QN_DATA_DIR=/tmp/qn-bench WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222 \
-//        src-tauri/target/release/quick-notes.exe
+//      NOTEWISP_DATA_DIR=/tmp/notewisp-bench WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222 \
+//        src-tauri/target/release/notewisp.exe
 // 3. node scripts/budgets.mjs
 //
 // Hotkey latency and idle memory are OS-level; see scripts/os-budgets.ps1 (Windows).
@@ -23,8 +23,8 @@ const F = { code: "KeyF", modifiers: MOD.ctrl, windowsVirtualKeyCode: 70 };
 const notes = await c.evaluate(`window.__TAURI_INTERNALS__.invoke('search', { query: 'e', limit: 1 }).then(() => true)`);
 if (!notes) throw new Error("app not responding");
 
-const coldStart = await c.evaluate(`window.__qnPerf.coldStart`);
-await c.evaluate(`window.__qnPerf.search.length = 0; window.__qnPerf.enterToVisible.length = 0`);
+const coldStart = await c.evaluate(`window.__nwPerf.coldStart`);
+await c.evaluate(`window.__nwPerf.search.length = 0; window.__nwPerf.enterToVisible.length = 0`);
 
 // Search: type queries one key at a time, as a person would.
 await c.evaluate(`document.querySelector('.composer .tiptap').focus()`);
@@ -55,7 +55,7 @@ const scroll = readFileSync(new URL("./scroll-bench.js", import.meta.url), "utf8
 const scrollSlow = await c.evaluate(`(${scroll})(40, 600)`);
 const scrollFast = await c.evaluate(`(${scroll})(150, 600)`);
 
-const perf = await c.evaluate(`({ search: window.__qnPerf.search, enter: window.__qnPerf.enterToVisible })`);
+const perf = await c.evaluate(`({ search: window.__nwPerf.search, enter: window.__nwPerf.enterToVisible })`);
 console.log(
   JSON.stringify(
     {

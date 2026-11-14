@@ -1,4 +1,4 @@
-# Quick Notes
+# NoteWisp
 
 A desktop popup for capturing thoughts as fast as messaging yourself. Press a hotkey, type, press Enter, and you're back where you were. Tauri 2 + Svelte 5, with every note in one local SQLite file.
 
@@ -11,8 +11,10 @@ A desktop popup for capturing thoughts as fast as messaging yourself. Press a ho
 
 ```sh
 npm install
-npm run tauri dev
+npm run app:dev
 ```
+
+`app:dev` runs as a separate app, **NoteWisp Dev** (`com.notewisp.desktop.dev`), with its own data folder, single-instance lock and autostart entry. It can run next to an installed NoteWisp without touching its notes.
 
 The popup appears when the app is ready. After that, **Alt+N** shows and hides it from anywhere, and the tray icon offers Show, Settings and Quit.
 
@@ -34,16 +36,18 @@ npm run build                # svelte-check type check + frontend bundle
 In a dev build, press **Ctrl+Alt+Shift+S** inside the popup to add 100,000 random notes (about 7 s). To keep them out of your real notes, point the app at a scratch folder first:
 
 ```sh
-QN_DATA_DIR=/tmp/qn-bench npm run tauri dev
+NOTEWISP_DATA_DIR=/tmp/notewisp-bench npm run app:dev
 ```
 
 ## Data
 
-| OS      | Folder                                              |
-| ------- | --------------------------------------------------- |
-| Windows | `%APPDATA%\com.quicknotes.app\`                     |
-| macOS   | `~/Library/Application Support/com.quicknotes.app/` |
-| Linux   | `~/.local/share/com.quicknotes.app/`                |
+| OS      | Folder                                                      |
+| ------- | ----------------------------------------------------------- |
+| Windows | `%APPDATA%\com.notewisp.desktop\`                     |
+| macOS   | `~/Library/Application Support/com.notewisp.desktop/` |
+| Linux   | `~/.local/share/com.notewisp.desktop/`                |
+
+`npm run app:dev` uses the same paths with `com.notewisp.desktop.dev`.
 
 - `notes.db`: all notes (SQLite, WAL mode)
 - `backups/notes-YYYY-MM-DD.db`: daily backup, last 7 kept
@@ -90,11 +94,11 @@ To reproduce on Windows:
 
 ```sh
 # 1. Seed a scratch database with a dev build (Ctrl+Alt+Shift+S), then quit it.
-QN_DATA_DIR=C:/tmp/qn-bench npm run tauri dev
+NOTEWISP_DATA_DIR=C:/tmp/notewisp-bench npm run app:dev
 # 2. OS-level budgets (cold start, hotkey, idle memory) on the release build.
-QN_DATA_DIR=C:/tmp/qn-bench powershell -File scripts/os-budgets.ps1 -Exe src-tauri/target/release/quick-notes.exe
+NOTEWISP_DATA_DIR=C:/tmp/notewisp-bench powershell -File scripts/os-budgets.ps1 -Exe src-tauri/target/release/notewisp.exe
 # 3. In-webview budgets (search, Enter, scrolling): start with remote debugging, then run the script.
-QN_DATA_DIR=C:/tmp/qn-bench WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222 src-tauri/target/release/quick-notes.exe &
+NOTEWISP_DATA_DIR=C:/tmp/notewisp-bench WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS=--remote-debugging-port=9222 src-tauri/target/release/notewisp.exe &
 node scripts/budgets.mjs
 ```
 
