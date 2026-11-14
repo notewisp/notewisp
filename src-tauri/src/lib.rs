@@ -66,7 +66,7 @@ fn build_tray(app: &AppHandle) -> tauri::Result<()> {
         ],
     )?;
     let mut tray = TrayIconBuilder::with_id("tray")
-        .tooltip("NoteWisp")
+        .tooltip(format!("NoteWisp {}", app.package_info().version))
         .menu(&menu)
         .show_menu_on_left_click(false)
         .on_menu_event(|app, event| match event.id.as_ref() {
